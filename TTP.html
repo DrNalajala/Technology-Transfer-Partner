@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technology Transfer Partner — Pro Engineering Scale-Up</title>
+    <style>
+        /* Same base styles plus enhancements */
+        :root {
+            --primary: #0f2a44;
+            --primary-light: #1d4a6e;
+            --primary-dark: #081829;
+            --accent: #0d7a5f;
+            --accent-light: #1a9a7a;
+            --bg: #eef2f6;
+            --surface: #ffffff;
+            --surface-alt: #f8fafc;
+            --border: #ccd7e4;
+            --text: #1a2b3c;
+            --text-secondary: #4a5a6a;
+            --text-muted: #7a8a9a;
+            --green: #10b981;
+            --yellow: #f59e0b;
+            --red: #ef4444;
+            --blue: #3b82f6;
+            --purple: #8b5cf6;
+            --shadow: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.1);
+            --radius: 10px;
+            --radius-sm: 6px;
+            --radius-lg: 16px;
+            --transition: 0.2s ease;
+            --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --mono: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
+            --sidebar-width: 230px;
+            --header-height: 58px;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:var(--font); background:var(--bg); color:var(--text); line-height:1.5; font-size:14px; display:flex; min-height:100vh; flex-direction:column; }
+        .app-header { background:var(--primary-dark); color:#fff; padding:0 24px; height:var(--header-height); display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; box-shadow:0 2px 12px rgba(0,0,0,0.3); }
+        .app-header .logo { display:flex; align-items:center; gap:10px; font-weight:700; font-size:1.05rem; letter-spacing:0.3px; }
+        .app-header .logo svg { width:30px; height:30px; }
+        .app-header .header-actions { display:flex; gap:8px; align-items:center; }
+        .app-header .header-actions button { background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); color:#fff; padding:8px 14px; border-radius:var(--radius-sm); cursor:pointer; font-size:0.82rem; transition:var(--transition); font-family:var(--font); }
+        .app-header .header-actions button:hover { background:rgba(255,255,255,0.22); border-color:rgba(255,255,255,0.4); }
+        .app-layout { display:flex; flex:1; overflow:hidden; }
+        .sidebar { width:var(--sidebar-width); background:var(--surface); border-right:1px solid var(--border); display:flex; flex-direction:column; padding:16px 0; overflow-y:auto; flex-shrink:0; }
+        .sidebar .nav-section { font-size:0.7rem; text-transform:uppercase; letter-spacing:0.8px; color:var(--text-muted); padding:12px 20px 6px; font-weight:600; }
+        .sidebar .nav-item { display:flex; align-items:center; gap:10px; padding:10px 20px; cursor:pointer; color:var(--text-secondary); transition:var(--transition); border-left:3px solid transparent; font-size:0.85rem; font-weight:500; }
+        .sidebar .nav-item:hover { background:var(--surface-alt); color:var(--text); }
+        .sidebar .nav-item.active { background:var(--surface-alt); color:var(--primary); border-left-color:var(--primary-light); font-weight:600; }
+        .sidebar .nav-item .icon { font-size:1.1rem; width:20px; text-align:center; }
+        .sidebar .nav-item .badge { margin-left:auto; background:var(--bg); padding:2px 8px; border-radius:10px; font-size:0.7rem; color:var(--text-muted); font-weight:600; }
+        .main-content { flex:1; overflow-y:auto; padding:24px 28px; display:flex; flex-direction:column; gap:20px; }
+        .tab-panel { display:none; }
+        .tab-panel.active { display:block; animation:fadeIn 0.25s ease; }
+        @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+        .section-title { font-size:1.25rem; font-weight:700; color:var(--primary); margin-bottom:4px; }
+        .section-subtitle { color:var(--text-secondary); font-size:0.88rem; margin-bottom:16px; }
+        .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow); margin-bottom:16px; }
+        .card-title { font-size:0.95rem; font-weight:700; color:var(--primary); margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+        .card-title .icon { font-size:1.2rem; }
+        .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+        .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+        .grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+        .form-group { display:flex; flex-direction:column; gap:4px; }
+        .form-group label { font-size:0.75rem; font-weight:600; color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.3px; }
+        .form-group input, .form-group select, .form-group textarea { padding:8px 10px; border:1px solid var(--border); border-radius:var(--radius-sm); font-size:0.85rem; font-family:var(--font); transition:var(--transition); background:#fff; color:var(--text); width:100%; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline:none; border-color:var(--primary-light); box-shadow:0 0 0 3px rgba(29,74,110,0.12); }
+        .form-group textarea { min-height:60px; resize:vertical; }
+        .form-group .unit { font-size:0.7rem; color:var(--text-muted); font-weight:500; }
+        .form-group .hint { font-size:0.72rem; color:var(--text-muted); font-style:italic; }
+        .btn { padding:9px 18px; border-radius:var(--radius-sm); border:1px solid var(--border); cursor:pointer; font-size:0.85rem; font-weight:600; font-family:var(--font); transition:var(--transition); display:inline-flex; align-items:center; gap:6px; background:var(--surface); color:var(--text); }
+        .btn:hover { border-color:var(--primary-light); box-shadow:var(--shadow); }
+        .btn-primary { background:var(--primary); color:#fff; border-color:var(--primary); }
+        .btn-primary:hover { background:var(--primary-light); border-color:var(--primary-light); }
+        .btn-accent { background:var(--accent); color:#fff; border-color:var(--accent); }
+        .btn-sm { padding:6px 12px; font-size:0.75rem; }
+        .risk-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:20px; font-size:0.78rem; font-weight:600; letter-spacing:0.3px; }
+        .risk-badge.low { background:#e8f8f0; color:#0a7a4a; border:1px solid #b8e6d0; }
+        .risk-badge.moderate { background:#fff8e8; color:#b45309; border:1px solid #f5e0b0; }
+        .risk-badge.high { background:#fef0f0; color:#b91c1c; border:1px solid #f5c0c0; }
+        .risk-dot { width:10px; height:10px; border-radius:50%; display:inline-block; margin-right:4px; }
+        .risk-dot.low { background:var(--green); } .risk-dot.moderate { background:var(--yellow); } .risk-dot.high { background:var(--red); }
+        table { width:100%; border-collapse:collapse; font-size:0.82rem; }
+        table th { background:var(--surface-alt); padding:8px 10px; text-align:left; font-weight:700; color:var(--text-secondary); border-bottom:2px solid var(--border); font-size:0.72rem; text-transform:uppercase; letter-spacing:0.4px; }
+        table td { padding:8px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+        table tr:hover td { background:#fafcfe; }
+        .calc-block { background:var(--surface-alt); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 14px; margin:8px 0; font-size:0.8rem; }
+        .calc-block .formula { font-family:var(--mono); color:var(--primary); font-weight:600; font-size:0.78rem; margin-bottom:4px; }
+        .calc-block .values { color:var(--text-secondary); font-size:0.75rem; }
+        .calc-block .result { font-weight:700; color:var(--text); font-size:0.85rem; margin-top:4px; }
+        .calc-block .assumption { font-size:0.7rem; color:var(--text-muted); font-style:italic; margin-top:4px; }
+        .tag { display:inline-block; padding:2px 8px; border-radius:12px; font-size:0.65rem; font-weight:600; letter-spacing:0.3px; }
+        .tag.calculated { background:#e8f0fe; color:#1a56b0; }
+        .tag.assumption { background:#fff8e8; color:#b45309; }
+        .tag.validated { background:#e8f8f0; color:#0a7a4a; }
+        .equipment-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px; }
+        .equipment-card { border:2px solid var(--border); border-radius:var(--radius); padding:12px; text-align:center; cursor:pointer; transition:var(--transition); background:var(--surface); }
+        .equipment-card:hover { border-color:var(--primary-light); box-shadow:var(--shadow); }
+        .equipment-card.selected { border-color:var(--primary); background:#f0f6fc; box-shadow:0 0 0 3px rgba(29,74,110,0.15); }
+        .equipment-card svg { width:70px; height:70px; margin-bottom:8px; }
+        .equipment-card .name { font-size:0.75rem; font-weight:600; color:var(--text); }
+        .equipment-card .specs { font-size:0.65rem; color:var(--text-muted); margin-top:4px; }
+        .flow-diagram { display:flex; flex-wrap:wrap; align-items:center; gap:8px; padding:16px; background:var(--surface-alt); border-radius:var(--radius); border:1px solid var(--border); overflow-x:auto; }
+        .flow-step { display:flex; flex-direction:column; align-items:center; gap:4px; padding:10px 14px; background:var(--surface); border:2px solid var(--border); border-radius:var(--radius-sm); cursor:pointer; transition:var(--transition); min-width:80px; text-align:center; }
+        .flow-step:hover { border-color:var(--primary-light); }
+        .flow-step.active { border-color:var(--accent); background:#f0faf8; }
+        .flow-step .step-icon { font-size:1.6rem; }
+        .flow-step .step-name { font-size:0.7rem; font-weight:600; color:var(--text-secondary); }
+        .flow-step .step-equipment { font-size:0.65rem; color:var(--accent); font-weight:500; }
+        .flow-arrow { font-size:1.3rem; color:var(--text-muted); }
+        .report-view { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:28px 32px; font-size:0.85rem; line-height:1.6; }
+        .report-view h1 { font-size:1.5rem; color:var(--primary); margin-bottom:4px; }
+        .report-view h2 { font-size:1.1rem; color:var(--primary); margin-top:20px; margin-bottom:8px; border-bottom:2px solid var(--border); padding-bottom:4px; }
+        .report-view h3 { font-size:0.95rem; color:var(--text-secondary); margin-top:14px; margin-bottom:6px; }
+        .report-view .report-meta { color:var(--text-muted); font-size:0.78rem; margin-bottom:16px; }
+        .validation-warning { background:#fff8e8; border:1px solid #f5e0b0; border-radius:var(--radius-sm); padding:8px 12px; font-size:0.75rem; color:#b45309; margin-top:8px; }
+        @media (max-width:900px) { .app-layout { flex-direction:column; } .sidebar { width:100%; flex-direction:row; overflow-x:auto; border-right:none; border-bottom:1px solid var(--border); padding:8px; gap:4px; } .sidebar .nav-section { display:none; } .sidebar .nav-item { border-left:none; border-bottom:2px solid transparent; padding:8px 12px; white-space:nowrap; } .sidebar .nav-item.active { border-bottom-color:var(--primary-light); border-left:none; } .grid-2,.grid-3,.grid-4 { grid-template-columns:1fr; } .main-content { padding:16px; } }
+        @media print { .app-header,.sidebar,.btn,.flow-diagram,.equipment-grid { display:none !important; } .main-content { padding:0; overflow:visible; } .tab-panel { display:block !important; } .report-view { border:none; padding:0; font-size:0.75rem; } body { background:#fff; } }
+        .progress-bar { height:4px; background:var(--border); border-radius:2px; overflow:hidden; margin-top:8px; }
+        .progress-bar .fill { height:100%; background:var(--accent); border-radius:2px; transition:width 0.3s ease; }
+        .tooltip { position:relative; cursor:help; }
+        .tooltip::after { content:attr(data-tip); position:absolute; bottom:100%; left:50%; transform:translateX(-50%); background:var(--primary-dark); color:#fff; padding:6px 10px; border-radius:4px; font-size:0.7rem; white-space:nowrap; opacity:0; pointer-events:none; transition:var(--transition); z-index:10; }
+        .tooltip:hover::after { opacity:1; }
+        ::-webkit-scrollbar { width:6px; height:6px; } ::-webkit-scrollbar-track { background:transparent; } ::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; } ::-webkit-scrollbar-thumb:hover { background:var(--text-muted); }
+    </style>
+</head>
+<body>
+    <header class="app-header">
+        <div class="logo">
+            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="28" height="28" rx="6" stroke="#fff" stroke-width="2" fill="none"/>
+                <path d="M8 16h16M16 8v16" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="16" cy="16" r="4" fill="#fff"/>
+                <circle cx="24" cy="8" r="2" fill="#4ade80"/>
+            </svg>
+            <span>Technology Transfer Partner</span>
+            <span style="font-size:0.65rem;opacity:0.7;font-weight:400;letter-spacing:1px;">PHARMA SCALE-UP ENGINE</span>
+        </div>
+        <div class="header-actions">
+            <button onclick="App.saveProject()">💾 Save</button>
+            <button onclick="App.loadProject()">📂 Load</button>
+            <button onclick="App.exportCSV()">📊 Excel</button>
+            <button onclick="App.exportPDF()">📄 PDF</button>
+        </div>
+    </header>
+
+    <div class="app-layout">
+        <nav class="sidebar" id="sidebar">
+            <div class="nav-section">Workflow</div>
+            <div class="nav-item active" data-tab="input" onclick="App.switchTab('input')"><span class="icon">🧪</span> Lab Inputs <span class="badge">Step 1</span></div>
+            <div class="nav-item" data-tab="scaleup" onclick="App.switchTab('scaleup')"><span class="icon">⚗️</span> Scale-Up Engine <span class="badge">Step 2</span></div>
+            <div class="nav-item" data-tab="equipment" onclick="App.switchTab('equipment')"><span class="icon">🏭</span> Equipment Mapping <span class="badge">Step 3</span></div>
+            <div class="nav-item" data-tab="filtration" onclick="App.switchTab('filtration')"><span class="icon">🔬</span> Filtration <span class="badge">Step 4</span></div>
+            <div class="nav-item" data-tab="drying" onclick="App.switchTab('drying')"><span class="icon">🌡️</span> Drying <span class="badge">Step 5</span></div>
+            <div class="nav-section">Analysis</div>
+            <div class="nav-item" data-tab="risk" onclick="App.switchTab('risk')"><span class="icon">⚠️</span> Risk Engine <span class="badge">Step 6</span></div>
+            <div class="nav-item" data-tab="matrix" onclick="App.switchTab('matrix')"><span class="icon">📋</span> Transfer Matrix <span class="badge">Step 7</span></div>
+            <div class="nav-item" data-tab="report" onclick="App.switchTab('report')"><span class="icon">📄</span> Final Report <span class="badge">Step 8</span></div>
+        </nav>
+
+        <main class="main-content" id="mainContent">
+            <!-- Tab 1: Lab Inputs -->
+            <div class="tab-panel active" id="tab-input">
+                <h2 class="section-title">🧪 Lab-Scale Process Input</h2>
+                <p class="section-subtitle">Enter all laboratory-scale process data. All fields are used for transparent scale-up calculations.</p>
+                <div class="card">
+                    <div class="card-title"><span class="icon">📦</span> Batch &amp; Materials</div>
+                    <div class="grid-3">
+                        <div class="form-group"><label>Lab Batch Size (g)</label><input type="number" id="in_batchSize" value="100" step="0.1" min="0.01" oninput="App.recalculate()"><span class="unit">grams (API/intermediate)</span></div>
+                        <div class="form-group"><label>Concentration (g/L)</label><input type="number" id="in_concentration" value="10" step="0.1" min="0.01" oninput="App.recalculate()"><span class="unit">g per litre of reaction volume</span></div>
+                        <div class="form-group"><label>Starting Material Quantity (g)</label><input type="number" id="in_startingMaterial" value="120" step="0.1" min="0.1" oninput="App.recalculate()"><span class="unit">grams</span></div>
+                    </div>
+                    <div class="grid-3" style="margin-top:12px;">
+                        <div class="form-group"><label>Solvent Volume — Main (mL)</label><input type="number" id="in_solventMain" value="800" step="1" min="0" oninput="App.recalculate()"><span class="unit">millilitres</span></div>
+                        <div class="form-group"><label>Solvent Volume — Rinse (mL)</label><input type="number" id="in_solventRinse" value="200" step="1" min="0" oninput="App.recalculate()"><span class="unit">millilitres</span></div>
+                        <div class="form-group"><label>Total Solvent Volume (mL)</label><input type="number" id="in_solventTotal" value="1000" step="1" min="0" oninput="App.recalculate()"><span class="unit">millilitres (auto-suggested)</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title"><span class="icon">🌡️</span> Reaction Conditions</div>
+                    <div class="grid-3">
+                        <div class="form-group"><label>Reaction Temperature (°C)</label><input type="number" id="in_temperature" value="65" step="0.5" oninput="App.recalculate()"><span class="unit">degrees Celsius</span></div>
+                        <div class="form-group"><label>Reaction Time (min)</label><input type="number" id="in_time" value="120" step="1" min="1" oninput="App.recalculate()"><span class="unit">minutes</span></div>
+                        <div class="form-group"><label>Pressure (bar abs)</label><input type="number" id="in_pressure" value="1.0" step="0.1" min="0.01" oninput="App.recalculate()"><span class="unit">bar absolute</span></div>
+                    </div>
+                    <div class="grid-3" style="margin-top:12px;">
+                        <div class="form-group"><label>Reagent Equivalents (mol eq)</label><input type="number" id="in_reagentEq" value="1.2" step="0.05" min="0" oninput="App.recalculate()"><span class="unit">relative to starting material</span></div>
+                        <div class="form-group"><label>Addition Rate (mL/min — lab)</label><input type="number" id="in_additionRate" value="2" step="0.1" min="0.01" oninput="App.recalculate()"><span class="unit">millilitres per minute</span></div>
+                        <div class="form-group"><label>Agitation RPM (lab)</label><input type="number" id="in_rpm" value="300" step="5" min="1" oninput="App.recalculate()"><span class="unit">revolutions per minute</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title"><span class="icon">⚙️</span> Lab Reactor Setup</div>
+                    <div class="grid-3">
+                        <div class="form-group"><label>Lab Reactor Type</label><select id="in_reactorType" onchange="App.recalculate()"><option value="RBF">Round Bottom Flask (RBF)</option><option value="glass">Glass Reactor (jacketed)</option><option value="SS">Stainless Steel Reactor</option><option value="jacketed">Jacketed Reactor (GL)</option><option value="other">Other</option></select></div>
+                        <div class="form-group"><label>Reactor Volume (mL)</label><input type="number" id="in_reactorVolume" value="2000" step="10" min="1" oninput="App.recalculate()"><span class="unit">millilitres</span></div>
+                        <div class="form-group"><label>Working Volume (mL)</label><input type="number" id="in_workingVolume" value="1200" step="10" min="1" oninput="App.recalculate()"><span class="unit">millilitres (actual reaction mass)</span></div>
+                    </div>
+                    <div class="grid-2" style="margin-top:12px;">
+                        <div class="form-group"><label>Heating / Cooling Method</label><select id="in_heatingCooling" onchange="App.recalculate()"><option value="oil">Oil Bath</option><option value="water">Water Bath</option><option value="mantle">Heating Mantle</option><option value="jacket">Jacketed (utility fluid)</option><option value="cryo">Cryogenic (-78°C)</option><option value="rt">Room Temperature</option></select></div>
+                        <div class="form-group"><label>Lab Observations &amp; Notes</label><textarea id="in_observations" rows="2" oninput="App.recalculate()" placeholder="e.g., mild exotherm on addition, gas evolution observed, foaming during quench..."></textarea></div>
+                    </div>
+                </div>
+                <!-- Solvent Selection (Upgraded) -->
+                <div class="card">
+                    <div class="card-title"><span class="icon">🧪</span> Solvent Selection & Properties</div>
+                    <div class="grid-2">
+                        <div class="form-group"><label>Main Solvent</label><select id="in_mainSolvent" onchange="App.recalculate()"></select></div>
+                        <div class="form-group"><label>Co-Solvent / Extraction Solvent</label><select id="in_extractionSolvent" onchange="App.recalculate()"></select></div>
+                    </div>
+                    <div id="solventProperties" style="margin-top:10px;font-size:0.8rem;"></div>
+                </div>
+                <div class="card">
+                    <div class="card-title"><span class="icon">🔄</span> Work-Up &amp; Isolation</div>
+                    <div class="grid-2">
+                        <div class="form-group"><label>Quench Description</label><input type="text" id="in_quench" value="Water quench (2 vol)" oninput="App.recalculate()"></div>
+                        <div class="form-group"><label>Extraction Solvent (Name)</label><input type="text" id="in_extraction" value="Ethyl acetate (3 x 200 mL)" oninput="App.recalculate()"></div>
+                    </div>
+                    <div class="grid-2" style="margin-top:12px;">
+                        <div class="form-group"><label>Filtration Method</label><select id="in_filtration" onchange="App.recalculate()"><option value="Buchner">Buchner Funnel (vacuum)</option><option value="filter_paper">Filter Paper (gravity)</option><option value="sintered">Sintered Glass Funnel</option><option value="centrifuge_lab">Lab Centrifuge</option></select></div>
+                        <div class="form-group"><label>Drying Method</label><select id="in_drying" onchange="App.recalculate()"><option value="vacuum_oven">Vacuum Oven</option><option value="air_dry">Air Drying</option><option value="lyophilizer">Lyophilizer</option><option value="rotavap">Rotavap</option></select></div>
+                    </div>
+                    <div class="grid-2" style="margin-top:12px;">
+                        <div class="form-group"><label>Isolation Yield (%)</label><input type="number" id="in_yield" value="85" step="0.5" min="0" max="100" oninput="App.recalculate()"><span class="unit">percent isolated yield</span></div>
+                        <div class="form-group"><label>Final LOD Target (%)</label><input type="number" id="in_lodTarget" value="0.5" step="0.1" min="0.01" max="10" oninput="App.recalculate()"><span class="unit">loss on drying</span></div>
+                    </div>
+                </div>
+                <!-- Reaction Kinetics (Optional) -->
+                <div class="card">
+                    <div class="card-title"><span class="icon">📈</span> Reaction Kinetics (Optional)</div>
+                    <div class="grid-3">
+                        <div class="form-group"><label>Reaction Order (n)</label><input type="number" id="in_reactionOrder" value="1" step="0.1" min="0.1" max="3" oninput="App.recalculate()"><span class="unit">0.5, 1, 2, etc.</span></div>
+                        <div class="form-group"><label>Rate Constant k (1/min) at lab T</label><input type="number" id="in_rateConstant" value="0.01" step="0.001" min="0.0001" oninput="App.recalculate()"><span class="unit">for first-order approx</span></div>
+                        <div class="form-group"><label>Activation Energy Ea (kJ/mol)</label><input type="number" id="in_activationEnergy" value="60" step="1" min="1" max="300" oninput="App.recalculate()"><span class="unit">kJ per mole</span></div>
+                    </div>
+                    <div id="kinetics_results" style="margin-top:12px;"></div>
+                </div>
+                <div style="display:flex;justify-content:flex-end;gap:8px;">
+                    <button class="btn btn-primary" onclick="App.switchTab('scaleup')">Run Scale-Up Engine →</button>
+                </div>
+            </div>
+
+            <!-- Tab 2: Scale-Up Engine -->
+            <div class="tab-panel" id="tab-scaleup">
+                <h2 class="section-title">⚗️ Lab → Plant Scale-Up Engine</h2>
+                <p class="section-subtitle">Transparent calculations with formulas, inputs, assumptions, units and results.</p>
+                <div class="card">
+                    <div class="card-title"><span class="icon">📐</span> Scale Factor &amp; Reactor Selection</div>
+                    <div class="grid-2">
+                        <div class="form-group"><label>Plant Batch Size Target (kg)</label><input type="number" id="in_plantBatch" value="50" step="1" min="0.1" oninput="App.recalculate()"><span class="unit">kilograms API/intermediate</span></div>
+                        <div class="form-group"><label>Scale Factor</label><input type="number" id="in_scaleFactor" value="500" step="10" min="1" oninput="App.recalculate()"><span class="unit">auto-calculated (plant/lab batch)</span></div>
+                    </div>
+                    <div id="scaleup_results" style="margin-top:16px;"></div>
+                </div>
+                <div class="card">
+                    <div class="card-title"><span class="icon">🌀</span> Agitation Scale-Up (Advanced)</div>
+                    <div class="grid-2">
+                        <div class="form-group"><label>Lab Impeller Diameter (cm)</label><input type="number" id="in_impellerLab" value="4" step="0.1" min="0.1" oninput="App.recalculate()"><span class="unit">centimetres</span></div>
+                        <div class="form-group"><label>Plant Impeller Diameter (cm)</label><input type="number" id="in_impellerPlant" value="40" step="1" min="1" oninput="App.recalculate()"><span class="unit">centimetres (estimated)</span></div>
+                    </div>
+                    <div id="agitation_results" style="margin-top:16px;"></div>
+                </div>
+                <div class="card">
+                    <div class="card-title"><span class="icon">🔥</span> Heat Transfer &amp; Exotherm</div>
+                    <div class="grid-3">
+                        <div class="form-group"><label>Estimated Heat of Reaction (kJ/mol)</label><input type="number" id="in_heatOfReaction" value="-120" step="5" oninput="App.recalculate()"><span class="unit">negative = exothermic</span></div>
+                        <div class="form-group"><label>Lab Jacket Heat Transfer Coeff. (W/m²K)</label><input type="number" id="in_htcLab" value="250" step="10" oninput="App.recalculate()"><span class="unit">W per m² per K</span></div>
+                        <div class="form-group"><label>Plant Jacket Heat Transfer Coeff. (W/m²K)</label><input type="number" id="in_htcPlant" value="350" step="10" oninput="App.recalculate()"><span class="unit">W per m² per K</span></div>
+                    </div>
+                    <div id="heat_results" style="margin-top:16px;"></div>
+                </div>
+                <div class="card">
+                    <div class="card-title"><span class="icon">➕</span> Addition Strategy &amp; Reaction Mass</div>
+                    <div id="addition_results" style="margin-top:8px;"></div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Equipment Mapping -->
+            <div class="tab-panel" id="tab-equipment">
+                <h2 class="section-title">🏭 Equipment Mapping</h2>
+                <p class="section-subtitle">Map every laboratory operation to suitable plant equipment. Click equipment to select.</p>
+                <div class="card"><div class="card-title"><span class="icon">🔗</span> Process Flow Diagram</div><div class="flow-diagram" id="flowDiagram"></div></div>
+                <div class="card"><div class="card-title"><span class="icon">🏗️</span> Equipment Selection</div><div class="equipment-grid" id="equipmentGrid"></div></div>
+                <div class="card" id="equipmentDetailsCard" style="display:none;"><div class="card-title"><span class="icon">📋</span> Selected Equipment Details</div><div id="equipmentDetails"></div></div>
+            </div>
+
+            <!-- Tab 4: Filtration -->
+            <div class="tab-panel" id="tab-filtration">
+                <h2 class="section-title">🔬 Filtration Scale-Up</h2>
+                <p class="section-subtitle">Calculate filter area, cake thickness, flux, and filtration time.</p>
+                <div class="card">
+                    <div class="grid-3">
+                        <div class="form-group"><label>Slurry Volume (L)</label><input type="number" id="in_slurryVolume" value="80" step="1" min="1" oninput="App.recalculate()"><span class="unit">litres at plant scale</span></div>
+                        <div class="form-group"><label>Solid Loading (wt%)</label><input type="number" id="in_solidLoading" value="15" step="0.5" min="1" max="60" oninput="App.recalculate()"><span class="unit">percent by weight</span></div>
+                        <div class="form-group"><label>Filter Type</label><select id="in_filterType" onchange="App.recalculate()"><option value="nutsche">Nutsche Filter</option><option value="centrifuge">Centrifuge</option><option value="filter_press">Filter Press / Sparkler</option><option value="afd">Agitated Filter Dryer (AFD)</option></select></div>
+                    </div>
+                    <div class="grid-3" style="margin-top:12px;">
+                        <div class="form-group"><label>Filtration Flux (L/m²·h) — lab measured</label><input type="number" id="in_filtrationFlux" value="200" step="10" min="1" oninput="App.recalculate()"><span class="unit">litres per m² per hour</span></div>
+                        <div class="form-group"><label>Cake Density (g/cm³)</label><input type="number" id="in_cakeDensity" value="1.4" step="0.1" min="0.5" oninput="App.recalculate()"><span class="unit">grams per cubic centimetre</span></div>
+                        <div class="form-group"><label>Washing Volume (L)</label><input type="number" id="in_washVolume" value="20" step="1" min="0" oninput="App.recalculate()"><span class="unit">litres</span></div>
+                    </div>
+                    <div id="filtration_results" style="margin-top:16px;"></div>
+                </div>
+            </div>
+
+            <!-- Tab 5: Drying -->
+            <div class="tab-panel" id="tab-drying">
+                <h2 class="section-title">🌡️ Drying Scale-Up</h2>
+                <p class="section-subtitle">Calculate wet-cake quantity, dryer capacity, and estimated drying time.</p>
+                <div class="card">
+                    <div class="grid-3">
+                        <div class="form-group"><label>Wet Cake Quantity (kg)</label><input type="number" id="in_wetCake" value="18" step="0.5" min="0.1" oninput="App.recalculate()"><span class="unit">kilograms</span></div>
+                        <div class="form-group"><label>Initial Solvent/Moisture Content (%)</label><input type="number" id="in_moistureInitial" value="35" step="1" min="1" max="80" oninput="App.recalculate()"><span class="unit">percent</span></div>
+                        <div class="form-group"><label>Final LOD Target (%)</label><input type="number" id="in_dryingTarget" value="0.5" step="0.1" min="0.01" max="10" oninput="App.recalculate()"><span class="unit">percent</span></div>
+                    </div>
+                    <div class="grid-3" style="margin-top:12px;">
+                        <div class="form-group"><label>Dryer Type</label><select id="in_dryerType" onchange="App.recalculate()"><option value="vacuum_tray">Vacuum Tray Dryer</option><option value="rvd">Rotary Vacuum Dryer (RVD)</option><option value="conical">Conical Vacuum Dryer</option><option value="afd">Agitated Filter Dryer (AFD)</option></select></div>
+                        <div class="form-group"><label>Drying Temperature (°C)</label><input type="number" id="in_dryingTemp" value="50" step="1" min="10" oninput="App.recalculate()"><span class="unit">degrees Celsius</span></div>
+                        <div class="form-group"><label>Vacuum Level (mbar abs)</label><input type="number" id="in_vacuumLevel" value="50" step="5" min="1" oninput="App.recalculate()"><span class="unit">millibar absolute</span></div>
+                    </div>
+                    <div id="drying_results" style="margin-top:16px;"></div>
+                </div>
+            </div>
+
+            <!-- Tab 6: Risk Engine -->
+            <div class="tab-panel" id="tab-risk">
+                <h2 class="section-title">⚠️ Scale-Up Risk Engine</h2>
+                <p class="section-subtitle">Automated risk flagging with engineering recommendations and severity/probability scoring.</p>
+                <div id="riskResults"></div>
+            </div>
+
+            <!-- Tab 7: Transfer Matrix -->
+            <div class="tab-panel" id="tab-matrix">
+                <h2 class="section-title">📋 Lab → Pilot → Plant Technology Transfer Matrix</h2>
+                <p class="section-subtitle">Comprehensive parameter-by-parameter comparison with scale-up basis and recommendations.</p>
+                <div class="card"><div id="transferMatrix"></div></div>
+            </div>
+
+            <!-- Tab 8: Report -->
+            <div class="tab-panel" id="tab-report">
+                <h2 class="section-title">📄 Technology Transfer Report</h2>
+                <p class="section-subtitle">Automatically generated comprehensive report.</p>
+                <div class="card">
+                    <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+                        <button class="btn btn-primary btn-sm" onclick="App.exportPDF()">📄 Print / PDF</button>
+                        <button class="btn btn-accent btn-sm" onclick="App.exportCSV()">📊 Export Excel (CSV)</button>
+                    </div>
+                    <div class="report-view" id="reportView"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div style="background:var(--surface);border-top:1px solid var(--border);padding:8px 24px;display:flex;justify-content:space-between;align-items:center;font-size:0.72rem;color:var(--text-muted);">
+        <span>© 2026 Technology Transfer Partner — Engineering calculations for scale-up guidance. All results are estimates; validate experimentally.</span>
+        <span id="statusIndicator" style="font-weight:600;">● Ready</span>
+    </div>
+
+    <script>
+        /* ============================================================
+           TECHNOLOGY TRANSFER PARTNER — PRO ENGINEERING MODULES
+           ============================================================ */
+
+        // ─── CONFIG & CONSTANTS ───────────────────────────────────────
+        const Config = {
+            version: '2.0.0',
+            // Expanded solvent database
+            solvents: {
+                'Water': { density: 1.0, bp: 100, class: 'aqueous', flammable: false, dielectric: 78.5, antoine: [8.07131, 1730.63, 233.426] },
+                'Methanol': { density: 0.792, bp: 64.7, class: 'polar', flammable: true, dielectric: 32.7, antoine: [7.89750, 1474.08, 229.13] },
+                'Ethanol': { density: 0.789, bp: 78.4, class: 'polar', flammable: true, dielectric: 24.5, antoine: [8.20417, 1642.89, 230.30] },
+                'Isopropanol': { density: 0.786, bp: 82.6, class: 'polar', flammable: true, dielectric: 19.9, antoine: [8.07131, 1730.63, 233.426] },
+                'Ethyl Acetate': { density: 0.902, bp: 77.1, class: 'ester', flammable: true, dielectric: 6.0, antoine: [7.10179, 1244.95, 217.88] },
+                'Toluene': { density: 0.867, bp: 110.6, class: 'aromatic', flammable: true, dielectric: 2.4, antoine: [6.95464, 1344.8, 219.48] },
+                'Dichloromethane': { density: 1.325, bp: 39.8, class: 'chlorinated', flammable: false, dielectric: 9.1, antoine: [7.0803, 1138.91, 231.45] },
+                'THF': { density: 0.889, bp: 66.0, class: 'ether', flammable: true, dielectric: 7.5, antoine: [6.99515, 1202.29, 226.25] },
+                'Acetone': { density: 0.791, bp: 56.0, class: 'ketone', flammable: true, dielectric: 20.7, antoine: [7.11714, 1210.595, 229.664] },
+                'DMF': { density: 0.944, bp: 153.0, class: 'polar_aprotic', flammable: true, dielectric: 36.7, antoine: [6.92796, 1400.87, 196.43] },
+                'Heptane': { density: 0.684, bp: 98.4, class: 'alkane', flammable: true, dielectric: 1.9, antoine: [6.9024, 1268.115, 216.9] },
+                'Acetonitrile': { density: 0.786, bp: 81.6, class: 'nitrile', flammable: true, dielectric: 37.5, antoine: [7.0735, 1279.2, 224.0] },
+                'Chloroform': { density: 1.492, bp: 61.2, class: 'chlorinated', flammable: false, dielectric: 4.8, antoine: [6.95465, 1170.966, 226.232] },
+                'MTBE': { density: 0.740, bp: 55.2, class: 'ether', flammable: true, dielectric: 2.6, antoine: [6.8990, 1057.9, 214.4] },
+                'n-Butanol': { density: 0.810, bp: 117.7, class: 'polar', flammable: true, dielectric: 17.8, antoine: [7.47680, 1362.39, 178.77] },
+                'DMSO': { density: 1.100, bp: 189.0, class: 'polar_aprotic', flammable: false, dielectric: 46.7, antoine: [7.0042, 1525.0, 185.4] },
+                'MIBK': { density: 0.802, bp: 117.0, class: 'ketone', flammable: true, dielectric: 13.1, antoine: [6.67272, 1168.4, 191.9] },
+                'Cyclohexane': { density: 0.779, bp: 80.7, class: 'alkane', flammable: true, dielectric: 2.0, antoine: [6.84498, 1203.526, 222.86] },
+                'Benzene': { density: 0.877, bp: 80.1, class: 'aromatic', flammable: true, dielectric: 2.3, antoine: [6.90565, 1211.033, 220.79] },
+            },
+            // Equipment database (extended)
+            equipmentDB: {
+                'GLR': { name:'Glass-Lined Reactor', capacity:'50–20000 L', workingRange:'40–80%', agitation:'Anchor/turbine, 20–200 RPM', heatingCooling:'Jacket, -20°C to 200°C', vacuum:'1 mbar abs', pressure:'6 bar', moc:'Glass-lined steel', suitability:'Corrosive media, acidic conditions' },
+                'SSR': { name:'Stainless Steel Reactor', capacity:'100–25000 L', workingRange:'40–85%', agitation:'Turbine/impeller, 20–250 RPM', heatingCooling:'Jacket/external, -40°C to 300°C', vacuum:'0.1 mbar abs', pressure:'40 bar', moc:'SS316/SS304', suitability:'Non-corrosive, high pressure/temp' },
+                'HAST': { name:'Hastelloy Reactor', capacity:'50–10000 L', workingRange:'40–80%', agitation:'Turbine/impeller, 20–200 RPM', heatingCooling:'Jacket, -40°C to 250°C', vacuum:'1 mbar abs', pressure:'20 bar', moc:'Hastelloy C276', suitability:'Highly corrosive, chloride-containing' },
+                'JACKETED': { name:'Jacketed Reactor (GL)', capacity:'20–5000 L', workingRange:'30–75%', agitation:'Turbine, 30–300 RPM', heatingCooling:'Double jacket, -20°C to 180°C', vacuum:'5 mbar abs', pressure:'3 bar', moc:'Borosilicate glass/GL', suitability:'Pilot scale, visual monitoring' },
+                'NUTSCHE': { name:'Filter Nutsche', capacity:'0.2–10 m²', workingRange:'Cake 2–20 cm', agitation:'None', heatingCooling:'Jacket optional', vacuum:'5 mbar abs', pressure:'3 bar', moc:'SS/GL', suitability:'Filtration, washing, delumping' },
+                'CENTRIFUGE': { name:'Centrifuge', capacity:'50–500 kg load', workingRange:'Cake 5–25 cm', agitation:'Rotating basket', heatingCooling:'None', vacuum:'N/A', pressure:'Atm', moc:'SS/Hastelloy', suitability:'Fast filtration, high solids' },
+                'SPARKLER': { name:'Sparkler/Filter Press', capacity:'1–50 m²', workingRange:'Cake 1–10 cm', agitation:'None', heatingCooling:'Optional', vacuum:'N/A', pressure:'6 bar', moc:'SS', suitability:'Clarification, polishing' },
+                'RVD': { name:'Rotary Vacuum Dryer', capacity:'50–5000 L', workingRange:'30–60% fill', agitation:'Rotating 2–10 RPM', heatingCooling:'Jacket up to 150°C', vacuum:'1 mbar abs', pressure:'Atm', moc:'SS/GL', suitability:'Free-flowing solids' },
+                'CONICAL': { name:'Conical Vacuum Dryer', capacity:'100–5000 L', workingRange:'30–65% fill', agitation:'Screw/ribbon 5–20 RPM', heatingCooling:'Jacket up to 150°C', vacuum:'1 mbar abs', pressure:'Atm', moc:'SS', suitability:'Sticky solids, mixing drying' },
+                'TRAY': { name:'Tray Dryer', capacity:'10–200 kg batch', workingRange:'Tray depth 2–5 cm', agitation:'None', heatingCooling:'Hot air/radiant up to 120°C', vacuum:'N/A', pressure:'Atm', moc:'SS', suitability:'Heat-sensitive, gentle drying' },
+                'AFD': { name:'Agitated Filter Dryer', capacity:'50–5000 L', workingRange:'30–60% fill', agitation:'Agitator 10–60 RPM', heatingCooling:'Jacket up to 150°C', vacuum:'1 mbar abs', pressure:'3 bar', moc:'SS/GL', suitability:'Combined filtration + drying' },
+            },
+            riskCategories: ['Heat Transfer','Mixing','Exotherm','Addition Rate','Gas Generation','Foaming','Solvent Handling','Phase Separation','Filtration','Drying','Reactor Compatibility','Impurity Formation','Yield Loss','Plant Operability'],
+        };
+
+        // ─── STATE ──────────────────────────────────────────────────
+        const App = {
+            state: {
+                inputs: {}, results: {}, risks: [], selectedEquipment: {}, flowMappings: {}, transferMatrixData: [],
+                projectName: 'Unnamed Project', savedAt: null,
+            },
+            currentTab: 'input',
+
+            init() {
+                this.populateSolventDropdowns();
+                this.loadInputsFromDOM();
+                this.bindInputEvents();
+                this.renderEquipmentGrid();
+                this.renderFlowDiagram();
+                this.recalculate();
+                this.switchTab('input');
+                this.updateStatus('Ready');
+            },
+
+            updateStatus(msg) { const el = document.getElementById('statusIndicator'); if(el) el.textContent = '● ' + msg; },
+
+            populateSolventDropdowns() {
+                const mainSel = document.getElementById('in_mainSolvent');
+                const extSel = document.getElementById('in_extractionSolvent');
+                const solventNames = Object.keys(Config.solvents);
+                if(mainSel) { mainSel.innerHTML = solventNames.map(s => `<option value="${s}">${s}</option>`).join(''); mainSel.value = 'Water'; }
+                if(extSel) { extSel.innerHTML = solventNames.map(s => `<option value="${s}">${s}</option>`).join(''); extSel.value = 'Ethyl Acetate'; }
+            },
+
+            loadInputsFromDOM() {
+                const ids = ['in_batchSize','in_concentration','in_startingMaterial','in_solventMain','in_solventRinse','in_solventTotal','in_temperature','in_time','in_pressure','in_reagentEq','in_additionRate','in_rpm','in_reactorType','in_reactorVolume','in_workingVolume','in_heatingCooling','in_observations','in_quench','in_extraction','in_filtration','in_drying','in_yield','in_lodTarget','in_plantBatch','in_scaleFactor','in_impellerLab','in_impellerPlant','in_heatOfReaction','in_htcLab','in_htcPlant','in_slurryVolume','in_solidLoading','in_filterType','in_filtrationFlux','in_cakeDensity','in_washVolume','in_wetCake','in_moistureInitial','in_dryingTarget','in_dryerType','in_dryingTemp','in_vacuumLevel','in_reactionOrder','in_rateConstant','in_activationEnergy'];
+                ids.forEach(id => { const el = document.getElementById(id); if(el) this.state.inputs[id.replace('in_','')] = el.value; });
+                // Capture solvent selections
+                const mainSolv = document.getElementById('in_mainSolvent'); if(mainSolv) this.state.inputs.mainSolvent = mainSolv.value;
+                const extSolv = document.getElementById('in_extractionSolvent'); if(extSolv) this.state.inputs.extractionSolvent = extSolv.value;
+            },
+
+            bindInputEvents() {
+                document.querySelectorAll('input, select, textarea').forEach(el => {
+                    if(!el.hasAttribute('oninput') && !el.hasAttribute('onchange')) { el.addEventListener('input', () => this.recalculate()); el.addEventListener('change', () => this.recalculate()); }
+                });
+                // Solvent dropdown change triggers property display
+                const mainSolv = document.getElementById('in_mainSolvent'); if(mainSolv) mainSolv.addEventListener('change', () => { this.recalculate(); this.updateSolventProperties(); });
+                const extSolv = document.getElementById('in_extractionSolvent'); if(extSolv) extSolv.addEventListener('change', () => { this.recalculate(); this.updateSolventProperties(); });
+            },
+
+            updateSolventProperties() {
+                const main = document.getElementById('in_mainSolvent').value;
+                const ext = document.getElementById('in_extractionSolvent').value;
+                const propDiv = document.getElementById('solventProperties');
+                if(!propDiv) return;
+                const mainData = Config.solvents[main] || {};
+                const extData = Config.solvents[ext] || {};
+                propDiv.innerHTML = `
+                    <div><strong>Main Solvent:</strong> ${main} — Density: ${mainData.density||'N/A'} g/mL, BP: ${mainData.bp||'N/A'}°C, Class: ${mainData.class||'N/A'}, Flammable: ${mainData.flammable?'Yes':'No'}</div>
+                    <div><strong>Extraction Solvent:</strong> ${ext} — Density: ${extData.density||'N/A'} g/mL, BP: ${extData.bp||'N/A'}°C, Class: ${extData.class||'N/A'}, Flammable: ${extData.flammable?'Yes':'No'}</div>
+                `;
+            },
+
+            getInput(key, defaultVal=null) {
+                const el = document.getElementById('in_' + key);
+                if(el) { const val = el.value; if(val === '' || val === null || val === undefined) return defaultVal; if(!isNaN(parseFloat(val)) && isFinite(val)) return parseFloat(val); return val; }
+                return this.state.inputs[key] || defaultVal;
+            },
+
+            setInput(key, value) { const el = document.getElementById('in_' + key); if(el) el.value = value; this.state.inputs[key] = value; },
+
+            // ─── TAB NAVIGATION ──────────────────────────────────────
+            switchTab(tab) {
+                this.currentTab = tab;
+                document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+                document.querySelectorAll('.sidebar .nav-item').forEach(n => n.classList.remove('active'));
+                const panel = document.getElementById('tab-' + tab);
+                const navItem = document.querySelector(`.sidebar .nav-item[data-tab="${tab}"]`);
+                if(panel) panel.classList.add('active');
+                if(navItem) navItem.classList.add('active');
+                this.updateStatus(this.getTabStatus(tab));
+                if(tab === 'scaleup') { this.renderScaleUpResults(); this.renderAgitationResults(); this.renderHeatResults(); this.renderAdditionResults(); this.renderKineticsResults(); }
+                if(tab === 'equipment') { this.renderFlowDiagram(); this.renderEquipmentGrid(); this.renderEquipmentDetails(); }
+                if(tab === 'filtration') this.renderFiltrationResults();
+                if(tab === 'drying') this.renderDryingResults();
+                if(tab === 'risk') this.renderRiskResults();
+                if(tab === 'matrix') this.renderTransferMatrix();
+                if(tab === 'report') this.renderReport();
+            },
+
+            getTabStatus(tab) {
+                const map = {'input':'Entering lab data','scaleup':'Calculating scale-up parameters','equipment':'Mapping equipment','filtration':'Scaling filtration','drying':'Scaling drying','risk':'Assessing risks','matrix':'Building transfer matrix','report':'Report ready'};
+                return map[tab] || 'Ready';
+            },
+
+            // ─── RECALCULATION ENGINE ───────────────────────────────
+            recalculate() {
+                this.loadInputsFromDOM();
+                this.runScaleUpCalculations();
+                this.runAgitationCalculations();
+                this.runHeatCalculations();
+                this.runAdditionCalculations();
+                this.runFiltrationCalculations();
+                this.runDryingCalculations();
+                this.runKineticsCalculations();
+                this.runMassBalanceCalculations();
+                this.runRiskAssessment();
+                this.runTransferMatrix();
+                // auto-suggest solvent total
+                const main = parseFloat(this.getInput('solventMain')||0);
+                const rinse = parseFloat(this.getInput('solventRinse')||0);
+                if(main>0||rinse>0) { const totalEl = document.getElementById('in_solventTotal'); if(totalEl && (totalEl.value===''||parseFloat(totalEl.value)===0||parseFloat(totalEl.value)===main+rinse)) totalEl.value = (main+rinse).toFixed(1); }
+                // auto-suggest scale factor
+                const labBatch = parseFloat(this.getInput('batchSize')||0);
+                const plantBatch = parseFloat(this.getInput('plantBatch')||0);
+                if(labBatch>0 && plantBatch>0) { const sf = (plantBatch*1000)/labBatch; const sfEl = document.getElementById('in_scaleFactor'); if(sfEl) sfEl.value = sf.toFixed(1); }
+                this.updateSolventProperties();
+                this.updateStatus('Calculations updated');
+                if(this.currentTab==='scaleup') { this.renderScaleUpResults(); this.renderAgitationResults(); this.renderHeatResults(); this.renderAdditionResults(); this.renderKineticsResults(); }
+                if(this.currentTab==='filtration') this.renderFiltrationResults();
+                if(this.currentTab==='drying') this.renderDryingResults();
+                if(this.currentTab==='risk') this.renderRiskResults();
+                if(this.currentTab==='matrix') this.renderTransferMatrix();
+                if(this.currentTab==='report') this.renderReport();
+            },
+
+            // ─── SCALE-UP CALCULATIONS ───────────────────────────────
+            runScaleUpCalculations() {
+                const labBatch = this.getInput('batchSize',100);
+                const concentration = this.getInput('concentration',10);
+                const solventMain = this.getInput('solventMain',800);
+                const solventRinse = this.getInput('solventRinse',200);
+                const solventTotal = this.getInput('solventTotal', solventMain+solventRinse);
+                const workingVolLab = this.getInput('workingVolume',1200);
+                const reactorVolLab = this.getInput('reactorVolume',2000);
+                const plantBatchKg = this.getInput('plantBatch',50);
+                const scaleFactor = (labBatch>0 && plantBatchKg>0) ? (plantBatchKg*1000)/labBatch : 1;
+                const plantWorkingVol = (workingVolLab/1000)*scaleFactor;
+                const plantReactorVol = plantWorkingVol*1.4;
+                const plantSolventVol = (solventTotal/1000)*scaleFactor;
+                const volRatioLab = reactorVolLab>0 ? workingVolLab/reactorVolLab : 0;
+                const volRatioPlant = plantWorkingVol>0 && plantReactorVol>0 ? plantWorkingVol/plantReactorVol : 0.65;
+                const concentrationPlant = plantBatchKg>0 && plantWorkingVol>0 ? (plantBatchKg*1000)/plantWorkingVol : concentration;
+                this.state.results.scaleUp = { labBatch, plantBatchKg, scaleFactor, plantWorkingVol, plantReactorVol, plantSolventVol, volRatioLab, volRatioPlant, concentrationLab:concentration, concentrationPlant, headspace:plantReactorVol-plantWorkingVol };
+            },
+
+            // ─── AGITATION CALCULATIONS (ADVANCED) ───────────────────
+            runAgitationCalculations() {
+                const rpmLab = this.getInput('rpm',300);
+                const impellerLabCm = this.getInput('impellerLab',4);
+                const impellerPlantCm = this.getInput('impellerPlant',40);
+                const labWorkingVol = this.getInput('workingVolume',1200);
+                const plantWorkingVol = this.state.results.scaleUp ? this.state.results.scaleUp.plantWorkingVol : 800;
+                const labVolL = labWorkingVol/1000;
+                const plantVolL = plantWorkingVol;
+                const tipSpeedLab = (rpmLab * impellerLabCm)/100;
+                const rpmPlant_tip = impellerPlantCm>0 ? (rpmLab*impellerLabCm)/impellerPlantCm : rpmLab;
+                const rpmPlant_pv = impellerPlantCm>0 ? rpmLab * Math.pow(impellerLabCm/impellerPlantCm, 5/3) : rpmLab;
+                const rpmRecommended = (rpmPlant_tip + rpmPlant_pv)/2;
+                const powerLab = 0.5*Math.pow(rpmLab,3)*Math.pow(impellerLabCm/100,5);
+                const powerPlant = 0.5*Math.pow(rpmRecommended,3)*Math.pow(impellerPlantCm/100,5);
+                const pvLab = labVolL>0 ? powerLab/labVolL : 0;
+                const pvPlant = plantVolL>0 ? powerPlant/plantVolL : 0;
+                // Reynolds number
+                const density = 1.0; // kg/L approximation
+                const viscosity = 0.001; // Pa.s (water)
+                const N_rps = rpmRecommended/60;
+                const D_m = impellerPlantCm/100;
+                const Re = (density*1000) * N_rps * D_m**2 / viscosity; // rho kg/m³, N s⁻¹, D m
+                // Froude number
+                const Fr = (N_rps**2 * D_m) / 9.81;
+                // Blend time (Ruszkowski correlation for turbulent)
+                const T_m = plantWorkingVol**0.333 * 2.5 / (N_rps * D_m**0.333); // simplified
+                const blendTime = Re>10000 ? 5.2*(plantVolL**0.333)/(N_rps*D_m**0.667) : 180/N_rps; // min
+                const regime = Re < 10 ? 'Laminar' : Re < 10000 ? 'Transitional' : 'Turbulent';
+                this.state.results.agitation = { rpmLab, impellerLabCm, impellerPlantCm, tipSpeedLab, rpmTip:rpmPlant_tip, rpmPV:rpmPlant_pv, rpmRecommended, powerLab, powerPlant, pvLab, pvPlant, tipSpeedRatio:(rpmRecommended*impellerPlantCm)/(rpmLab*impellerLabCm), Re, Fr, blendTime, regime };
+            },
+
+            // ─── HEAT TRANSFER CALCULATIONS (CORRELATIONS) ───────────
+            runHeatCalculations() {
+                const temp = this.getInput('temperature',65);
+                const heatRx = this.getInput('heatOfReaction',-120);
+                const htcLabInput = this.getInput('htcLab',250);
+                const htcPlantInput = this.getInput('htcPlant',350);
+                const labVol = this.getInput('workingVolume',1200)/1000;
+                const plantVol = this.state.results.scaleUp ? this.state.results.scaleUp.plantWorkingVol : 800;
+                const labArea = 0.02;
+                const plantArea = labArea * Math.pow(plantVol/labVol, 2/3);
+                // Estimate htc from Nusselt if not provided? Use provided values.
+                const labUA = htcLabInput * labArea;
+                const plantUA = htcPlantInput * plantArea;
+                const heatLoadRelative = Math.abs(heatRx) * (plantVol/labVol);
+                const deltaT_lab = 10;
+                const deltaT_plant = 15;
+                const coolingCapacityLab = labUA * deltaT_lab;
+                const coolingCapacityPlant = plantUA * deltaT_plant;
+                const coolingRatio = coolingCapacityPlant / (coolingCapacityLab * (plantVol/labVol) * 2.5);
+                // Adiabatic temperature rise
+                const molarMass = 100; // g/mol assumed
+                const molesLab = this.getInput('startingMaterial',120)/molarMass;
+                const molesPlant = molesLab * (plantVol/labVol);
+                const heatRelease = Math.abs(heatRx) * molesPlant; // kJ
+                const heatCapacity = plantVol * 1.0 * 4.18; // kJ/K (assume water-like)
+                const deltaT_adiabatic = heatCapacity>0 ? heatRelease/heatCapacity : 0;
+                const MTSR = temp + deltaT_adiabatic;
+                const TMR = this.estimateTMR(deltaT_adiabatic, heatRx);
+                this.state.results.heat = { temp, heatRx, htcLab:htcLabInput, htcPlant:htcPlantInput, labVol, plantVol, labArea, plantArea, labUA, plantUA, heatLoadRelative, coolingCapacityLab, coolingCapacityPlant, coolingRatio, deltaT_lab, deltaT_plant, deltaT_adiabatic, MTSR, TMR };
+            },
+
+            estimateTMR(deltaT_adiabatic, heatRx) {
+                if(Math.abs(heatRx) < 50) return 24; // hours
+                if(deltaT_adiabatic > 100) return 0.1; // minutes
+                if(deltaT_adiabatic > 50) return 1;
+                if(deltaT_adiabatic > 20) return 8;
+                return 24;
+            },
+
+            // ─── ADDITION STRATEGY ──────────────────────────────────
+            runAdditionCalculations() {
+                const additionRateLab = this.getInput('additionRate',2);
+                const labVol = this.getInput('workingVolume',1200);
+                const scaleFactor = this.state.results.scaleUp ? this.state.results.scaleUp.scaleFactor : 1;
+                const plantAdditionRate = additionRateLab * scaleFactor;
+                const additionTimeLab = (this.getInput('solventMain',800)+this.getInput('solventRinse',200))/additionRateLab;
+                const additionTimePlant = additionTimeLab;
+                const reactionMassVol = this.state.results.scaleUp ? this.state.results.scaleUp.plantWorkingVol : labVol*scaleFactor;
+                const gasEvolutionRisk = (this.getInput('observations','')||'').toLowerCase().includes('gas') ? 'Yes' : 'No';
+                const foamingRisk = (this.getInput('observations','')||'').toLowerCase().includes('foam') ? 'Yes' : 'No';
+                this.state.results.addition = { additionRateLab, plantAdditionRate, additionTimeLab, additionTimePlant, reactionMassVol, gasEvolutionRisk, foamingRisk };
+            },
+
+            // ─── FILTRATION CALCULATIONS ─────────────────────────────
+            runFiltrationCalculations() {
+                const slurryVol = this.getInput('slurryVolume',80);
+                const solidLoading = this.getInput('solidLoading',15)/100;
+                const flux = this.getInput('filtrationFlux',200);
+                const cakeDensity = this.getInput('cakeDensity',1.4);
+                const washVol = this.getInput('washVolume',20);
+                const filterType = this.getInput('filterType','nutsche');
+                const solidMass = slurryVol * solidLoading * 1.0;
+                const cakeVolume = (solidMass/cakeDensity)/1000;
+                const cakeVolume_m3 = cakeVolume/1000;
+                const filterArea = (slurryVol/flux)*1.2;
+                const cakeThickness = filterArea>0 ? (cakeVolume/filterArea)*100 : 0;
+                const filtrationTime = (slurryVol/(flux*filterArea))*60;
+                const washTime = (washVol/(flux*filterArea*0.7))*60;
+                const totalTime = filtrationTime+washTime;
+                const motherLiquorHoldUp = cakeVolume*0.35;
+                const filterRecommendation = this.getFilterRecommendation(filterType,cakeThickness,solidMass);
+                this.state.results.filtration = { slurryVol, solidLoading, flux, cakeDensity, washVol, filterType, solidMass, cakeVolume:cakeVolume_m3, filterArea, cakeThickness, filtrationTime, washTime, totalTime, motherLiquorHoldUp, filterRecommendation };
+            },
+
+            getFilterRecommendation(filterType,cakeThickness,solidMass) {
+                const recs = { 'nutsche':{min:'0.2 m²',max:'10 m²',note:'Ideal for cake washing and delumping.'}, 'centrifuge':{min:'50 kg',max:'500 kg',note:'Fast filtration, high throughput.'}, 'filter_press':{min:'1 m²',max:'50 m²',note:'Clarification and polishing.'}, 'afd':{min:'50 L',max:'5000 L',note:'Combined filtration + drying.'} };
+                const base = recs[filterType]||recs['nutsche'];
+                if(cakeThickness>20) base.note += ' ⚠️ Cake thickness high — consider increasing filter area.';
+                if(solidMass>500) base.note += ' ⚠️ Large solids load — ensure adequate capacity.';
+                return base;
+            },
+
+            // ─── DRYING CALCULATIONS ────────────────────────────────
+            runDryingCalculations() {
+                const wetCake = this.getInput('wetCake',18);
+                const moistureInitial = this.getInput('moistureInitial',35)/100;
+                const dryingTarget = this.getInput('dryingTarget',0.5)/100;
+                const dryTemp = this.getInput('dryingTemp',50);
+                const vacuum = this.getInput('vacuumLevel',50);
+                const dryerType = this.getInput('dryerType','vacuum_tray');
+                const drySolid = wetCake*(1-moistureInitial);
+                const solventLoad = wetCake - drySolid;
+                const finalWetCake = drySolid/(1-dryingTarget);
+                const solventToRemove = wetCake - finalWetCake;
+                const dryingRate = this.estimateDryingRate(dryTemp,vacuum,dryerType);
+                const dryingTime = dryingRate>0 ? solventToRemove/dryingRate : 0;
+                const dryerCapacity = drySolid*1.5;
+                const degradationRisk = dryTemp>80?'High':dryTemp>60?'Moderate':'Low';
+                const solvateRisk = vacuum>100?'Moderate':'Low';
+                const finalLOD = dryingTarget*100;
+                this.state.results.drying = { wetCake, moistureInitial, dryingTarget, dryTemp, vacuum, dryerType, drySolid, solventLoad, solventToRemove, dryingRate, dryingTime, dryerCapacity, degradationRisk, solvateRisk, finalLOD };
+            },
+
+            estimateDryingRate(temp,vacuum,dryerType) {
+                const baseRate = {'vacuum_tray':0.8,'rvd':1.2,'conical':1.0,'afd':1.1};
+                const base = baseRate[dryerType]||0.8;
+                const tempFactor = (temp+273)/323;
+                const vacuumFactor = vacuum<100?1.2:1.0;
+                return base*tempFactor*vacuumFactor*0.5;
+            },
+
+            // ─── REACTION KINETICS (NEW) ─────────────────────────────
+            runKineticsCalculations() {
+                const order = this.getInput('reactionOrder',1);
+                const kLab = this.getInput('rateConstant',0.01);
+                const Ea = this.getInput('activationEnergy',60);
+                const TlabC = this.getInput('temperature',65);
+                const TplantC = TlabC; // assume same temperature, can be overridden if needed
+                const TlabK = TlabC + 273.15;
+                const TplantK = TplantC + 273.15;
+                const R = 8.314;
+                const kPlant = kLab * Math.exp((Ea*1000/R)*(1/TlabK - 1/TplantK));
+                // If plant temperature same, kPlant = kLab
+                // Time scaling: for first order, t_plant = t_lab (if same temperature), but if T changes, use k ratio
+                const timeLab = this.getInput('time',120);
+                const timePlant = timeLab * (kLab/kPlant); // same conversion scaling
+                const conversionLab = 1 - Math.exp(-kLab * timeLab); // first order
+                const conversionPlant = 1 - Math.exp(-kPlant * timePlant);
+                this.state.results.kinetics = { order, kLab, kPlant, Ea, TlabC, TplantC, timeLab, timePlant, conversionLab, conversionPlant };
+            },
+
+            // ─── MASS BALANCE (NEW) ─────────────────────────────────
+            runMassBalanceCalculations() {
+                const labBatch = this.getInput('batchSize',100);
+                const plantBatchKg = this.getInput('plantBatch',50);
+                const yieldPct = this.getInput('yield',85);
+                const startingMatLab = this.getInput('startingMaterial',120);
+                const scaleFactor = this.state.results.scaleUp ? this.state.results.scaleUp.scaleFactor : 1;
+                const plantStartingMat = startingMatLab * scaleFactor / 1000; // kg
+                const plantProduct = plantBatchKg; // target
+                const plantWaste = plantStartingMat - plantProduct * (startingMatLab/labBatch) * (100/yieldPct); // rough
+                const impurityLoad = plantStartingMat * 0.02; // 2% impurity assumption
+                this.state.results.massBalance = { labBatch, plantBatchKg, yieldPct, startingMatLab, plantStartingMat, plantProduct, plantWaste, impurityLoad };
+            },
+
+            // ─── RISK ASSESSMENT (SEVERITY/PROBABILITY) ──────────────
+            runRiskAssessment() {
+                const risks = [];
+                const results = this.state.results;
+                const observations = (this.getInput('observations','')||'').toLowerCase();
+                const addRisk = (category, level, why, recommendation, severity=1, probability=1) => {
+                    risks.push({ category, level, why, recommendation, severity, probability, score: severity*probability });
+                };
+                // Heat transfer
+                if(results.heat && results.heat.coolingRatio < 0.5) addRisk('Heat Transfer','high','Plant cooling capacity is <50% of scaled requirement. Exotherm may not be controlled.','Increase jacket surface area, reduce batch size, or use external cooling loops.',5,4);
+                else if(results.heat && results.heat.coolingRatio < 0.8) addRisk('Heat Transfer','moderate','Cooling capacity is marginal (<80% of scaled requirement).','Optimize jacket temperature, reduce addition rate, or consider intermediate cooling.',4,3);
+                else addRisk('Heat Transfer','low','Cooling capacity appears adequate for the scaled batch.','Maintain standard temperature monitoring.',1,1);
+                // Mixing
+                if(results.agitation && results.agitation.rpmRecommended < 30) addRisk('Mixing','moderate','Recommended plant RPM is very low (<30). Mixing may be inadequate.','Consider larger impeller, multiple impellers, or baffles for better mixing.',3,3);
+                else if(results.agitation && results.agitation.rpmRecommended > 300) addRisk('Mixing','moderate','Recommended plant RPM is very high (>300). Mechanical stress risk.','Use larger impeller diameter or consider different agitator type.',3,3);
+                else addRisk('Mixing','low','Agitation RPM is within typical plant range.','Standard agitation setup is suitable.',1,1);
+                // Exotherm
+                if(results.heat && results.heat.heatRx < -200) addRisk('Exotherm','high','Highly exothermic reaction (ΔH < -200 kJ/mol). Thermal runaway risk.','Implement controlled addition, emergency cooling, and reaction calorimetry data.',5,4);
+                else if(results.heat && results.heat.heatRx < -80) addRisk('Exotherm','moderate','Moderate exotherm detected. Temperature control needed.','Use slow addition, adequate cooling, and monitor reaction progression.',4,3);
+                else addRisk('Exotherm','low','Mild or no significant exotherm.','Standard temperature monitoring sufficient.',1,1);
+                // Addition rate
+                if(results.addition && results.addition.plantAdditionRate > 5000) addRisk('Addition Rate','moderate','Plant addition rate exceeds 5 L/min. Manual addition may be difficult.','Use automated dosing pump. Verify line sizing and valve compatibility.',3,3);
+                else addRisk('Addition Rate','low','Plant addition rate is manageable.','Standard addition pump recommended.',1,1);
+                // Gas generation
+                if(observations.includes('gas')||observations.includes('evolution')) addRisk('Gas Generation','high','Gas evolution observed in lab. Plant-scale gas handling needed.','Ensure vent line capacity, consider gas scrubber, and size headspace for gas volume.',5,4);
+                else addRisk('Gas Generation','low','No significant gas evolution reported.','Standard venting adequate.',1,1);
+                // Foaming
+                if(observations.includes('foam')||observations.includes('foaming')) addRisk('Foaming','moderate','Foaming observed. Risk of carryover at plant scale.','Add anti-foam agent, reduce agitation during foaming stages, or install foam breaker.',3,3);
+                else addRisk('Foaming','low','No significant foaming reported.','Standard agitation and headspace adequate.',1,1);
+                // Solvent handling
+                const mainSolv = this.getInput('mainSolvent','Water');
+                const solvData = Config.solvents[mainSolv] || {};
+                if(solvData.class === 'chlorinated') addRisk('Solvent Handling','moderate','Chlorinated solvent detected. Environmental and health concerns.','Use containment, proper PPE, and waste solvent recovery system.',4,3);
+                else if(solvData.class === 'aromatic') addRisk('Solvent Handling','moderate','Aromatic solvent — flammability and exposure risk.','Use flame-proof equipment, proper ventilation, and PPE.',4,3);
+                else addRisk('Solvent Handling','low','Solvent is standard for pharma manufacturing.','Standard solvent handling protocols apply.',1,1);
+                // Phase separation
+                if(observations.includes('emulsion')||observations.includes('phase')) addRisk('Phase Separation','moderate','Emulsion or phase separation issues noted.','Allow longer settling time, use coalescing plates, or consider continuous separation.',3,3);
+                else addRisk('Phase Separation','low','No phase separation issues reported.','Standard separation vessel adequate.',1,1);
+                // Filtration
+                if(results.filtration && results.filtration.cakeThickness > 25) addRisk('Filtration','moderate','Cake thickness >25 cm. Filtration resistance high.','Increase filter area, use larger filter, or consider pressure filtration.',3,3);
+                else if(results.filtration && results.filtration.filtrationTime > 240) addRisk('Filtration','moderate','Estimated filtration time >4 hours. Process bottleneck.','Optimize particle size, increase filter area, or use centrifuge for faster separation.',3,3);
+                else addRisk('Filtration','low','Filtration parameters within normal range.','Selected filter type is suitable.',1,1);
+                // Drying
+                if(results.drying && results.drying.dryingTime > 48) addRisk('Drying','moderate','Estimated drying time >48 hours. Process bottleneck.','Increase drying temperature (if allowed), improve vacuum, or use more efficient dryer.',4,3);
+                else if(results.drying && results.drying.degradationRisk === 'High') addRisk('Drying','high','Drying temperature may cause thermal degradation.','Reduce drying temperature, increase vacuum, or use lyophilization.',5,4);
+                else if(results.drying && results.drying.degradationRisk === 'Moderate') addRisk('Drying','moderate','Moderate degradation risk at drying temperature.','Monitor degradation profile during drying validation.',3,3);
+                else addRisk('Drying','low','Drying conditions appear safe for the product.','Standard drying protocol applicable.',1,1);
+                // Reactor compatibility
+                const reactorType = this.getInput('reactorType','RBF');
+                if(reactorType==='RBF'||reactorType==='glass') addRisk('Reactor Compatibility','moderate','Lab reactor is glass. Plant will use SS or GL — check compatibility.','Verify material compatibility with reaction mixture at scale. Consider glass-lined reactor for acidic conditions.',3,3);
+                else addRisk('Reactor Compatibility','low','Lab reactor material likely compatible with plant.','Confirm material of construction with process chemistry.',1,1);
+                // Impurity formation
+                if(results.scaleUp && results.scaleUp.scaleFactor > 1000) addRisk('Impurity Formation','moderate','High scale factor (>1000x). Extended processing times may increase impurities.','Monitor impurity profile during scale-up. Consider telescoping or process intensification.',4,3);
+                else addRisk('Impurity Formation','low','Scale factor within acceptable range for impurity control.','Standard impurity monitoring recommended.',1,1);
+                // Yield loss
+                if(results.filtration && results.filtration.motherLiquorHoldUp > 5) addRisk('Yield Loss','moderate','Significant mother-liquor hold-up in filter cake.','Optimize washing protocol, consider filter press for better displacement washing.',3,3);
+                else addRisk('Yield Loss','low','Yield loss from filtration expected to be minimal.','Standard washing protocol adequate.',1,1);
+                // Plant operability
+                if(results.scaleUp && results.scaleUp.plantReactorVol > 20000) addRisk('Plant Operability','high','Required reactor volume >20,000 L. May exceed plant capacity.','Split batch, use multiple reactors, or consider continuous processing.',5,4);
+                else if(results.scaleUp && results.scaleUp.plantReactorVol > 10000) addRisk('Plant Operability','moderate','Required reactor volume >10,000 L. Large-scale operation.','Verify plant reactor availability. Consider process intensification to reduce volume.',3,3);
+                else addRisk('Plant Operability','low','Reactor volume within typical plant capacity.','Standard plant scheduling applies.',1,1);
+
+                // Additional exotherm safety parameters
+                if(results.heat && results.heat.deltaT_adiabatic > 100) risks.push({category:'Exotherm (Adiabatic)', level:'high', why:'Adiabatic temperature rise >100°C. Thermal runaway potential.', recommendation:'Implement emergency quench, pressure relief, and reaction calorimetry.', severity:5, probability:4, score:20});
+                this.state.risks = risks;
+            },
+
+            // ─── TRANSFER MATRIX ────────────────────────────────────
+            runTransferMatrix() {
+                const rows = [];
+                const results = this.state.results;
+                const labYield = this.getInput('yield',85);
+                const addRow = (param, lab, pilot, plant, basis, risk, recommendation) => rows.push({param,lab,pilot,plant,basis,risk,recommendation});
+                addRow('Batch Size', `${this.getInput('batchSize',100)} g`, `${(this.getInput('batchSize',100)*10/1000).toFixed(2)} kg`, `${this.getInput('plantBatch',50)} kg`, 'Geometric scale-up', 'Medium', 'Verify plant reactor capacity');
+                addRow('Reactor Volume', `${this.getInput('reactorVolume',2000)} mL`, `${(results.scaleUp?results.scaleUp.plantReactorVol/10:0).toFixed(0)} L`, `${(results.scaleUp?results.scaleUp.plantReactorVol:0).toFixed(0)} L`, 'Working volume + 40% headspace', 'Low', 'Select appropriate reactor');
+                addRow('Working Volume', `${this.getInput('workingVolume',1200)} mL`, `${(results.scaleUp?results.scaleUp.plantWorkingVol/10:0).toFixed(0)} L`, `${(results.scaleUp?results.scaleUp.plantWorkingVol:0).toFixed(0)} L`, 'Direct scale factor', 'Low', 'Maintain 40-70% fill');
+                addRow('Temperature', `${this.getInput('temperature',65)} °C`, `${this.getInput('temperature',65)} °C`, `${this.getInput('temperature',65)} °C`, 'Constant (scale-independent)', 'Low', 'Maintain within ±2°C');
+                addRow('Agitation RPM', `${this.getInput('rpm',300)} RPM`, `${(results.agitation?results.agitation.rpmRecommended*1.5:45).toFixed(0)} RPM`, `${(results.agitation?results.agitation.rpmRecommended:30).toFixed(0)} RPM`, 'Tip speed & P/V constant', 'Medium', 'Verify mixing quality');
+                addRow('Reaction Time', `${this.getInput('time',120)} min`, `${this.getInput('time',120)} min`, `${(results.kinetics?results.kinetics.timePlant:this.getInput('time',120)).toFixed(0)} min`, 'Reaction kinetics', 'Medium', 'Monitor for heat/mass transfer effects');
+                addRow('Addition Rate', `${this.getInput('additionRate',2)} mL/min`, `${(results.addition?results.addition.plantAdditionRate/1000:0).toFixed(2)} L/min`, `${(results.addition?results.addition.plantAdditionRate/1000:0).toFixed(2)} L/min`, 'Proportional to scale', 'Medium', 'Automated dosing recommended');
+                addRow('Isolation Yield', `${labYield}%`, `${(labYield*0.98).toFixed(1)}%`, `${(labYield*0.95).toFixed(1)}%`, 'Typical scale-down factor', 'Medium', 'Expect slight yield reduction at scale');
+                addRow('Filtration Area', `0.01 m² (lab)`, `${(results.filtration?results.filtration.filterArea/10:0).toFixed(1)} m²`, `${(results.filtration?results.filtration.filterArea:0).toFixed(1)} m²`, 'Flux-based', 'Medium', 'Select filter with adequate area');
+                addRow('Drying Time', '2-4 h (lab)', `${(results.drying?results.drying.dryingTime/2:0).toFixed(1)} h`, `${(results.drying?results.drying.dryingTime:0).toFixed(1)} h`, 'Heat & mass transfer', 'Medium', 'Monitor LOD to confirm');
+                addRow('Pressure', `${this.getInput('pressure',1.0)} bar`, `${this.getInput('pressure',1.0)} bar`, `${this.getInput('pressure',1.0)} bar`, 'Constant', 'Low', 'Verify vessel rating');
+                this.state.transferMatrixData = rows;
+            },
+
+            // ─── RENDER FUNCTIONS ────────────────────────────────────
+            renderScaleUpResults() {
+                const r = this.state.results.scaleUp; if(!r) return;
+                const el = document.getElementById('scaleup_results'); if(!el) return;
+                el.innerHTML = `
+              <div class="calc-block"><div class="formula">Scale Factor = Plant Batch / Lab Batch = ${r.plantBatchKg} kg × 1000 / ${r.labBatch} g</div>
+              <div class="result">Scale Factor = <strong>${r.scaleFactor.toFixed(1)}×</strong> <span class="tag calculated">CALCULATED</span></div></div>
+              <div class="calc-block"><div class="formula">Plant Working Volume = Lab Working Volume × Scale Factor</div>
+              <div class="result">Plant Working Volume = <strong>${r.plantWorkingVol.toFixed(1)} L</strong></div></div>
+              <div class="calc-block"><div class="formula">Plant Reactor Volume = Working Volume / 0.65 (65% fill)</div>
+              <div class="result">Recommended Reactor Volume = <strong>${r.plantReactorVol.toFixed(1)} L</strong></div>
+              <div class="assumption">Fill ratio = 65% (engineering assumption). Headspace: ${r.headspace.toFixed(1)} L</div></div>
+              <div class="calc-block"><div class="formula">Volume Ratio: Lab ${(r.volRatioLab*100).toFixed(0)}% | Plant ${(r.volRatioPlant*100).toFixed(0)}%</div>
+              <div class="result">Concentration: Lab ${r.concentrationLab} g/L → Plant ${r.concentrationPlant.toFixed(1)} g/L</div></div>
+              <div class="calc-block"><div class="formula">Plant Solvent Volume = Lab Solvent × Scale Factor</div>
+              <div class="result">Plant Solvent Volume = <strong>${r.plantSolventVol.toFixed(1)} L</strong></div></div>`;
+            },
+
+            renderAgitationResults() {
+                const a = this.state.results.agitation; if(!a) return;
+                const el = document.getElementById('agitation_results'); if(!el) return;
+                el.innerHTML = `
+              <div class="calc-block"><div class="formula">Tip Speed (lab) = ${a.rpmLab} RPM × ${a.impellerLabCm} cm → ${a.tipSpeedLab.toFixed(1)} m/min</div>
+              <div class="result">Plant RPM (tip speed constant) = <strong>${a.rpmTip.toFixed(0)} RPM</strong></div></div>
+              <div class="calc-block"><div class="formula">RPM(P/V) = N₁ × (D₁/D₂)^(5/3)</div>
+              <div class="result">Plant RPM (P/V constant) = <strong>${a.rpmPV.toFixed(0)} RPM</strong></div></div>
+              <div class="calc-block"><div class="formula">Recommended RPM = Average(tip speed, P/V)</div>
+              <div class="result">Recommended Plant RPM = <strong>${a.rpmRecommended.toFixed(0)} RPM</strong></div>
+              <div class="assumption">Range: ${Math.min(a.rpmTip,a.rpmPV).toFixed(0)} – ${Math.max(a.rpmTip,a.rpmPV).toFixed(0)} RPM</div></div>
+              <div class="calc-block"><div class="formula">Reynolds Number = ρ·N·D²/μ = ${a.Re.toFixed(0)}</div>
+              <div class="result">Flow regime: <strong>${a.regime}</strong> | Blend time approx: ${a.blendTime.toFixed(1)} min</div>
+              <div class="assumption">Assumed density=1000 kg/m³, viscosity=1 cP. Adjust for actual fluid.</div></div>`;
+            },
+
+            renderHeatResults() {
+                const h = this.state.results.heat; if(!h) return;
+                const el = document.getElementById('heat_results'); if(!el) return;
+                el.innerHTML = `
+              <div class="calc-block"><div class="formula">Plant Heat Transfer Area = Lab Area × (V_plant/V_lab)^(2/3) = ${h.plantArea.toFixed(2)} m²</div>
+              <div class="result">Plant UA = ${h.plantUA.toFixed(1)} W/K</div></div>
+              <div class="calc-block"><div class="formula">Cooling Capacity = UA × ΔT = ${h.plantUA.toFixed(1)} W/K × ${h.deltaT_plant} K</div>
+              <div class="result">Plant Cooling Capacity ≈ <strong>${h.coolingCapacityPlant.toFixed(1)} W</strong></div></div>
+              <div class="calc-block"><div class="formula">Cooling Adequacy Ratio = ${h.coolingRatio.toFixed(2)}</div>
+              <div class="result">${h.coolingRatio<0.5?'<span class="risk-badge high">🔴 HIGH RISK</span>':h.coolingRatio<0.8?'<span class="risk-badge moderate">🟡 MODERATE</span>':'<span class="risk-badge low">🟢 LOW</span>'}</div></div>
+              <div class="calc-block"><div class="formula">Adiabatic Temperature Rise = ${h.deltaT_adiabatic.toFixed(1)} °C</div>
+              <div class="result">MTSR = <strong>${h.MTSR.toFixed(1)} °C</strong> | TMR ≈ ${h.TMR} h</div>
+              <div class="assumption">Based on assumed heat capacity (water-like). Validate with calorimetry.</div></div>`;
+            },
+
+            renderAdditionResults() {
+                const add = this.state.results.addition; if(!add) return;
+                const el = document.getElementById('addition_results'); if(!el) return;
+                el.innerHTML = `
+              <div class="calc-block"><div class="formula">Plant Addition Rate = Lab Rate × Scale Factor</div>
+              <div class="result">Plant Addition Rate = <strong>${add.plantAdditionRate.toFixed(1)} mL/min</strong> (${(add.plantAdditionRate/1000).toFixed(3)} L/min)</div></div>
+              <div class="calc-block"><div class="formula">Addition Time: Lab ${add.additionTimeLab.toFixed(1)} min | Plant ${add.additionTimePlant.toFixed(1)} min</div>
+              <div class="result">Reaction Mass Volume: <strong>${add.reactionMassVol.toFixed(1)} L</strong></div></div>
+              <div class="calc-block"><div class="formula">Gas Evolution: ${add.gasEvolutionRisk} | Foaming: ${add.foamingRisk}</div></div>`;
+            },
+
+            renderKineticsResults() {
+                const k = this.state.results.kinetics; if(!k) return;
+                const el = document.getElementById('kinetics_results'); if(!el) return;
+                el.innerHTML = `<div class="calc-block"><div class="formula">k_plant = k_lab × exp((Ea/R)(1/T_lab - 1/T_plant))</div>
+                <div class="result">k_plant = <strong>${k.kPlant.toFixed(6)} min⁻¹</strong> | k_lab = ${k.kLab.toFixed(6)} min⁻¹</div>
+                <div class="result">Reaction time scaling: Lab ${k.timeLab} min → Plant ${k.timePlant.toFixed(1)} min (same conversion)</div>
+                <div class="result">Conversion: Lab ${(k.conversionLab*100).toFixed(1)}% | Plant ${(k.conversionPlant*100).toFixed(1)}%</div>
+                <div class="assumption">Assuming first-order kinetics and same temperature. Adjust if order differs.</div></div>`;
+            },
+
+            renderFiltrationResults() {
+                const f = this.state.results.filtration; if(!f) return;
+                const el = document.getElementById('filtration_results'); if(!el) return;
+                el.innerHTML = `
+              <div class="calc-block"><div class="formula">Solid Mass = Slurry Volume × Solid Loading = ${f.slurryVol} L × ${(f.solidLoading*100).toFixed(1)}%</div>
+              <div class="result">Solid Mass ≈ <strong>${f.solidMass.toFixed(1)} kg</strong></div></div>
+              <div class="calc-block"><div class="formula">Filter Area = Slurry Volume / Flux × Safety = ${f.slurryVol} L / ${f.flux} L/m²·h × 1.2</div>
+              <div class="result">Required Filter Area = <strong>${f.filterArea.toFixed(2)} m²</strong></div></div>
+              <div class="calc-block"><div class="formula">Cake Thickness = Cake Volume / Filter Area × 100</div>
+              <div class="result">Cake Thickness = <strong>${f.cakeThickness.toFixed(1)} cm</strong> ${f.cakeThickness>25?'<span class="risk-badge high">🔴 >25cm</span>':f.cakeThickness>15?'<span class="risk-badge moderate">🟡 >15cm</span>':'<span class="risk-badge low">🟢 LOW</span>'}</div></div>
+              <div class="calc-block"><div class="formula">Filtration Time = Volume / (Flux × Area)</div>
+              <div class="result">Filtration Time = <strong>${f.filtrationTime.toFixed(1)} min</strong> | Washing = <strong>${f.washTime.toFixed(1)} min</strong></div>
+              <div class="result">Total Time ≈ <strong>${f.totalTime.toFixed(1)} min</strong> (${(f.totalTime/60).toFixed(2)} h)</div></div>
+              <div class="calc-block"><div class="formula">Mother-Liquor Hold-Up = Cake Volume × 0.35</div>
+              <div class="result">Hold-Up = <strong>${f.motherLiquorHoldUp.toFixed(3)} L</strong></div></div>
+              <div class="calc-block"><div class="formula">Filter Recommendation: ${f.filterType.toUpperCase()}</div>
+              <div class="result">Capacity: ${f.filterRecommendation.min} – ${f.filterRecommendation.max}</div>
+              <div class="assumption">${f.filterRecommendation.note}</div></div>`;
+            },
+
+            renderDryingResults() {
+                const d = this.state.results.drying; if(!d) return;
+                const el = document.getElementById('drying_results'); if(!el) return;
+                el.innerHTML = `
+              <div class="calc-block"><div class="formula">Dry Solid = Wet Cake × (1 - Moisture)</div>
+              <div class="result">Dry Solid = <strong>${d.drySolid.toFixed(2)} kg</strong> | Solvent Load = <strong>${d.solventLoad.toFixed(2)} kg</strong></div></div>
+              <div class="calc-block"><div class="formula">Solvent to Remove = Wet - Final</div>
+              <div class="result">Total Solvent Removed = <strong>${d.solventToRemove.toFixed(2)} kg</strong></div></div>
+              <div class="calc-block"><div class="formula">Drying Rate = f(T, vacuum, dryer) = ${d.dryingRate.toFixed(2)} kg/h</div>
+              <div class="result">Estimated Drying Time = <strong>${d.dryingTime.toFixed(1)} h</strong> (${(d.dryingTime/24).toFixed(2)} days)</div></div>
+              <div class="calc-block"><div class="formula">Dryer Capacity Required = <strong>${d.dryerCapacity.toFixed(1)} kg</strong></div></div>
+              <div class="calc-block"><div class="formula">Degradation Risk: <strong>${d.degradationRisk}</strong> | Solvate Risk: <strong>${d.solvateRisk}</strong> | Final LOD: <strong>${d.finalLOD.toFixed(2)}%</strong></div></div>`;
+            },
+
+            renderRiskResults() {
+                const el = document.getElementById('riskResults'); if(!el) return;
+                const risks = this.state.risks; if(!risks||risks.length===0) { el.innerHTML='<p>No risk assessment data.</p>'; return; }
+                let html = '<div class="card"><div class="card-title"><span class="icon">⚠️</span> Risk Summary</div>';
+                const counts = {low:0,moderate:0,high:0};
+                risks.forEach(r=>counts[r.level]++);
+                html += `<div style="display:flex;gap:12px;flex-wrap:wrap;"><span class="risk-badge low">🟢 ${counts.low} Low</span><span class="risk-badge moderate">🟡 ${counts.moderate} Moderate</span><span class="risk-badge high">🔴 ${counts.high} High</span></div></div>`;
+                html += '<div class="card"><div class="card-title"><span class="icon">📊</span> Detailed Risk Assessment (Severity × Probability)</div><table><thead><tr><th>Category</th><th>Level</th><th>Score (S×P)</th><th>Why</th><th>Recommendation</th></tr></thead><tbody>';
+                risks.forEach(r=>{ const badgeClass=r.level; const dot=`<span class="risk-dot ${badgeClass}"></span>`; html += `<tr><td><strong>${r.category}</strong></td><td>${dot} ${r.level.toUpperCase()}</td><td>${r.score}</td><td>${r.why}</td><td>${r.recommendation}</td></tr>`; });
+                html += '</tbody></table></div>';
+                el.innerHTML = html;
+            },
+
+            renderTransferMatrix() {
+                const el = document.getElementById('transferMatrix'); if(!el) return;
+                const data = this.state.transferMatrixData; if(!data||data.length===0) { el.innerHTML='<p>No matrix data.</p>'; return; }
+                let html = `<table><thead><tr><th>Parameter</th><th>Lab</th><th>Pilot</th><th>Plant</th><th>Scale-Up Basis</th><th>Risk</th><th>Recommendation</th></tr></thead><tbody>`;
+                data.forEach(row=>{ const riskClass=row.risk.toLowerCase(); html += `<tr><td><strong>${row.param}</strong></td><td>${row.lab}</td><td>${row.pilot}</td><td>${row.plant}</td><td>${row.basis}</td><td><span class="risk-badge ${riskClass}">${row.risk}</span></td><td>${row.recommendation}</td></tr>`; });
+                html += '</tbody></table>';
+                el.innerHTML = html;
+            },
+
+            // ─── RENDER: EQUIPMENT GRID ──────────────────────────────
+            renderEquipmentGrid() {
+                const el = document.getElementById('equipmentGrid'); if(!el) return;
+                const eqs = Config.equipmentDB; let html='';
+                for(const [key,eq] of Object.entries(eqs)) {
+                    const selected = this.state.selectedEquipment[key]?'selected':'';
+                    html += `<div class="equipment-card ${selected}" onclick="App.selectEquipment('${key}')"><div>${this.getEquipmentSVG(key)}</div><div class="name">${eq.name}</div><div class="specs">${eq.capacity}</div><div class="specs">${eq.suitability.substring(0,40)}...</div></div>`;
+                }
+                el.innerHTML=html;
+            },
+            selectEquipment(key) {
+                if(this.state.selectedEquipment[key]) delete this.state.selectedEquipment[key]; else this.state.selectedEquipment[key]=true;
+                this.renderEquipmentGrid(); this.renderEquipmentDetails();
+                this.updateStatus(`Selected: ${Object.keys(this.state.selectedEquipment).map(k=>Config.equipmentDB[k].name).join(', ')||'None'}`);
+            },
+            renderEquipmentDetails() {
+                const card=document.getElementById('equipmentDetailsCard'); const el=document.getElementById('equipmentDetails'); if(!card||!el) return;
+                const selected=Object.keys(this.state.selectedEquipment); if(selected.length===0){card.style.display='none';return;}
+                card.style.display='block'; let html='';
+                selected.forEach(key=>{ const eq=Config.equipmentDB[key]; html += `<div style="margin-bottom:12px;padding:12px;background:var(--surface-alt);border-radius:var(--radius-sm);"><strong style="color:var(--primary);">${eq.name}</strong><div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:6px;font-size:0.8rem;"><span><strong>Capacity:</strong> ${eq.capacity}</span><span><strong>Working Range:</strong> ${eq.workingRange}</span><span><strong>Agitation:</strong> ${eq.agitation}</span><span><strong>Heating/Cooling:</strong> ${eq.heatingCooling}</span><span><strong>Vacuum:</strong> ${eq.vacuum}</span><span><strong>Pressure:</strong> ${eq.pressure}</span><span><strong>MOC:</strong> ${eq.moc}</span><span><strong>Suitability:</strong> ${eq.suitability}</span></div></div>`; });
+                el.innerHTML=html;
+            },
+            getEquipmentSVG(key) {
+                // simple inline SVG icons (same as before, shortened)
+                const icons = {'GLR':'🔵','SSR':'🔩','HAST':'🛡️','JACKETED':'🧪','NUTSCHE':'🔬','CENTRIFUGE':'🌀','SPARKLER':'✨','RVD':'🌪️','CONICAL':'📐','TRAY':'📦','AFD':'⚗️'};
+                return `<span style="font-size:2rem;">${icons[key]||'🏭'}</span>`;
+            },
+            renderFlowDiagram() {
+                const el=document.getElementById('flowDiagram'); if(!el) return;
+                const steps=[{id:'reaction',icon:'🧪',name:'Reaction',eq:'Reactor'},{id:'quench',icon:'💧',name:'Quench',eq:'Quench Tank'},{id:'extraction',icon:'🧬',name:'Extraction',eq:'Extractor'},{id:'phase_sep',icon:'⚗️',name:'Phase Sep',eq:'Separator'},{id:'filtration',icon:'🔬',name:'Filtration',eq:'Filter'},{id:'washing',icon:'🚿',name:'Washing',eq:'Filter Wash'},{id:'drying',icon:'🌡️',name:'Drying',eq:'Dryer'},{id:'milling',icon:'⚙️',name:'Milling',eq:'Mill'},{id:'packing',icon:'📦',name:'Packing',eq:'Packaging'}];
+                let html=''; steps.forEach((step,i)=>{ const isActive=this.state.flowMappings[step.id]?'active':''; html += `<div class="flow-step ${isActive}" onclick="App.toggleFlowStep('${step.id}')"><span class="step-icon">${step.icon}</span><span class="step-name">${step.name}</span><span class="step-equipment">${step.eq}</span></div>`; if(i<steps.length-1) html += `<span class="flow-arrow">→</span>`; });
+                el.innerHTML=html;
+            },
+            toggleFlowStep(id) { if(this.state.flowMappings[id]) delete this.state.flowMappings[id]; else this.state.flowMappings[id]=true; this.renderFlowDiagram(); },
+
+            renderReport() {
+                const el=document.getElementById('reportView'); if(!el) return;
+                const r=this.state.results; const risks=this.state.risks; const matrix=this.state.transferMatrixData;
+                const sf=r.scaleUp, ag=r.agitation, ht=r.heat, ad=r.addition, fl=r.filtration, dr=r.drying, kin=r.kinetics, mb=r.massBalance;
+                const now=new Date().toLocaleString();
+                let html=`<h1>Technology Transfer Report</h1><div class="report-meta">Generated: ${now} | Project: ${this.state.projectName} | Version: ${Config.version}</div>`;
+                html += `<div style="background:#f8fafc;padding:12px;border-radius:6px;margin-bottom:16px;font-size:0.78rem;color:#4a5a6a;"><strong>⚠️ Important:</strong> All calculated values are engineering estimates and must be validated experimentally. This report provides guidance only.</div>`;
+                html += `<h2>1. Process Summary</h2><p>Lab batch: <strong>${this.getInput('batchSize',100)} g</strong> | Plant batch: <strong>${this.getInput('plantBatch',50)} kg</strong> | Scale factor: <strong>${sf?sf.scaleFactor.toFixed(1):'N/A'}×</strong></p><p>Reaction: ${this.getInput('temperature',65)}°C, ${this.getInput('time',120)} min, ${this.getInput('pressure',1.0)} bar</p><p>Solvents: Main ${this.getInput('mainSolvent','Water')} / Extraction ${this.getInput('extractionSolvent','Ethyl Acetate')}</p>`;
+                html += `<h2>2. Batch Scaling</h2><p>Scale Factor: ${sf?sf.scaleFactor.toFixed(1):'N/A'} | Plant Working Vol: ${sf?sf.plantWorkingVol.toFixed(1):'N/A'} L | Reactor Vol: ${sf?sf.plantReactorVol.toFixed(1):'N/A'} L | Headspace: ${sf?sf.headspace.toFixed(1):'N/A'} L</p>`;
+                html += `<h2>3. Reactor Selection</h2><p>Recommended volume: <strong>${sf?sf.plantReactorVol.toFixed(0):'N/A'} L</strong>. Verify material compatibility.</p>`;
+                html += `<h2>4. Agitation</h2><p>Plant RPM: <strong>${ag?ag.rpmRecommended.toFixed(0):'N/A'}</strong> | Regime: ${ag?ag.regime:'N/A'} | Blend time: ${ag?ag.blendTime.toFixed(1):'N/A'} min</p>`;
+                html += `<h2>5. Heating/Cooling</h2><p>UA: ${ht?ht.plantUA.toFixed(1):'N/A'} W/K | Cooling ratio: ${ht?ht.coolingRatio.toFixed(2):'N/A'} | ΔT_adiabatic: ${ht?ht.deltaT_adiabatic.toFixed(1):'N/A'}°C | MTSR: ${ht?ht.MTSR.toFixed(1):'N/A'}°C</p>`;
+                html += `<h2>6. Reaction Kinetics</h2><p>k_lab: ${kin?kin.kLab.toFixed(6):'N/A'} min⁻¹ | k_plant: ${kin?kin.kPlant.toFixed(6):'N/A'} min⁻¹ | Plant time: ${kin?kin.timePlant.toFixed(1):'N/A'} min | Conversion: ${kin?(kin.conversionPlant*100).toFixed(1):'N/A'}%</p>`;
+                html += `<h2>7. Filtration</h2><p>Area: ${fl?fl.filterArea.toFixed(2):'N/A'} m² | Cake: ${fl?fl.cakeThickness.toFixed(1):'N/A'} cm | Time: ${fl?fl.totalTime.toFixed(1):'N/A'} min</p>`;
+                html += `<h2>8. Drying</h2><p>Dry solid: ${dr?dr.drySolid.toFixed(2):'N/A'} kg | Solvent remove: ${dr?dr.solventToRemove.toFixed(2):'N/A'} kg | Time: ${dr?dr.dryingTime.toFixed(1):'N/A'} h | LOD: ${dr?dr.finalLOD.toFixed(2):'N/A'}%</p>`;
+                html += `<h2>9. Mass Balance</h2><p>Plant starting material: ${mb?mb.plantStartingMat.toFixed(1):'N/A'} kg | Product: ${mb?mb.plantProduct.toFixed(1):'N/A'} kg | Waste: ${mb?mb.plantWaste.toFixed(1):'N/A'} kg | Impurity load: ${mb?mb.impurityLoad.toFixed(2):'N/A'} kg</p>`;
+                html += `<h2>10. Risk Assessment</h2><table><thead><tr><th>Category</th><th>Level</th><th>Score</th><th>Recommendation</th></tr></thead><tbody>${risks.map(r=>`<tr><td>${r.category}</td><td><span class="risk-badge ${r.level}">${r.level.toUpperCase()}</span></td><td>${r.score}</td><td>${r.recommendation}</td></tr>`).join('')}</tbody></table>`;
+                html += `<h2>11. Transfer Matrix</h2><table><thead><tr><th>Parameter</th><th>Lab</th><th>Pilot</th><th>Plant</th><th>Basis</th><th>Risk</th></tr></thead><tbody>${matrix.map(row=>`<tr><td>${row.param}</td><td>${row.lab}</td><td>${row.pilot}</td><td>${row.plant}</td><td>${row.basis}</td><td>${row.risk}</td></tr>`).join('')}</tbody></table>`;
+                html += `<h2>12. Engineering Trial Requirements</h2><p>1. Pilot batch (10% scale) validation. 2. Reaction calorimetry (RC1) for exotherm. 3. Filtration trial. 4. Drying study. 5. Mixing characterization. 6. Stability studies.</p>`;
+                html += `<h2>13. Technology Transfer Checklist</h2><p>☐ Lab data verified ☐ Scale-up calculations reviewed ☐ Equipment selected ☐ Risk assessment completed ☐ Pilot trial approved ☐ Analytical methods transferred ☐ HAZOP completed ☐ Operator training ☐ Raw materials defined ☐ IPCs established</p>`;
+                html += `<p style="margin-top:16px;font-size:0.75rem;color:#7a8a9a;font-style:italic;">Generated automatically by Technology Transfer Partner v${Config.version}. Validate all estimates before implementation.</p>`;
+                el.innerHTML=html;
+            },
+
+            saveProject() {
+                this.loadInputsFromDOM();
+                const data={version:Config.version,projectName:this.state.projectName,savedAt:new Date().toISOString(),inputs:this.state.inputs,results:this.state.results,risks:this.state.risks,selectedEquipment:this.state.selectedEquipment,flowMappings:this.state.flowMappings,transferMatrixData:this.state.transferMatrixData};
+                const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+                const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`tech-transfer-${this.state.projectName.replace(/\s+/g,'-')}.json`; a.click(); URL.revokeObjectURL(url);
+                this.updateStatus('Project saved');
+            },
+            loadProject() {
+                const input=document.createElement('input'); input.type='file'; input.accept='.json';
+                input.onchange=(e)=>{ const file=e.target.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=(event)=>{ try{ const data=JSON.parse(event.target.result); this.restoreProject(data); this.updateStatus('Project loaded'); this.recalculate(); this.renderEquipmentGrid(); this.renderFlowDiagram(); }catch(err){ alert('Error loading: '+err.message); } }; reader.readAsText(file); };
+                input.click();
+            },
+            restoreProject(data) {
+                if(data.inputs) Object.keys(data.inputs).forEach(key=>this.setInput(key,data.inputs[key]));
+                if(data.results) this.state.results=data.results;
+                if(data.risks) this.state.risks=data.risks;
+                if(data.selectedEquipment) this.state.selectedEquipment=data.selectedEquipment;
+                if(data.flowMappings) this.state.flowMappings=data.flowMappings;
+                if(data.transferMatrixData) this.state.transferMatrixData=data.transferMatrixData;
+                if(data.projectName) this.state.projectName=data.projectName;
+                this.loadInputsFromDOM();
+            },
+            exportCSV() {
+                this.recalculate();
+                let csv='Technology Transfer Partner - Export\nGenerated: '+new Date().toLocaleString()+'\n\n';
+                csv += 'LAB INPUTS\n'; const inputKeys=['batchSize','concentration','startingMaterial','solventMain','solventRinse','solventTotal','temperature','time','pressure','reagentEq','additionRate','rpm','reactorType','reactorVolume','workingVolume','heatingCooling','quench','extraction','filtration','drying','yield','lodTarget'];
+                inputKeys.forEach(key=>csv += `${key}: ${this.getInput(key,'N/A')}\n`);
+                csv += '\nSCALE-UP RESULTS\n'; const r=this.state.results;
+                if(r.scaleUp){csv += `Scale Factor: ${r.scaleUp.scaleFactor.toFixed(1)}\nPlant Working Volume (L): ${r.scaleUp.plantWorkingVol.toFixed(1)}\nReactor Volume (L): ${r.scaleUp.plantReactorVol.toFixed(1)}\n`;}
+                if(r.agitation){csv += `\nAGITATION\nRecommended RPM: ${r.agitation.rpmRecommended.toFixed(0)}\nReynolds: ${r.agitation.Re.toFixed(0)}\nBlend Time (min): ${r.agitation.blendTime.toFixed(1)}\n`;}
+                if(r.heat){csv += `\nHEAT TRANSFER\nCooling Ratio: ${r.heat.coolingRatio.toFixed(2)}\nDeltaT_adiabatic: ${r.heat.deltaT_adiabatic.toFixed(1)}\nMTSR: ${r.heat.MTSR.toFixed(1)}\n`;}
+                if(r.filtration){csv += `\nFILTRATION\nArea (m²): ${r.filtration.filterArea.toFixed(2)}\nCake (cm): ${r.filtration.cakeThickness.toFixed(1)}\nTime (min): ${r.filtration.totalTime.toFixed(1)}\n`;}
+                if(r.drying){csv += `\nDRYING\nTime (h): ${r.drying.dryingTime.toFixed(1)}\nLOD: ${r.drying.finalLOD.toFixed(2)}\n`;}
+                csv += '\nRISK ASSESSMENT\n'; this.state.risks.forEach(r=>csv += `${r.category}: ${r.level.toUpperCase()} (${r.score}) - ${r.recommendation}\n`);
+                csv += '\nTRANSFER MATRIX\nParameter,Lab,Pilot,Plant,Basis,Risk\n'; this.state.transferMatrixData.forEach(row=>csv += `${row.param},${row.lab},${row.pilot},${row.plant},${row.basis},${row.risk}\n`);
+                const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`tech-transfer-export-${Date.now()}.csv`; a.click(); URL.revokeObjectURL(url);
+                this.updateStatus('CSV exported');
+            },
+            exportPDF() { this.recalculate(); this.renderReport(); this.switchTab('report'); setTimeout(()=>window.print(),300); },
+        };
+
+        // ─── INITIALIZE ─────────────────────────────────────────────
+        document.addEventListener('DOMContentLoaded', ()=>App.init());
+    </script>
+</body>
+</html>
